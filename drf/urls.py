@@ -10,7 +10,7 @@ router.register(r"groups", views.GroupViewSet)
 
 
 urlpatterns = [
-    path("", include(router.urls)),
-    path("library/", include("library.urls")),
+    # path("", include(router.urls)),
+    path("", include("library.urls")),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
 ]

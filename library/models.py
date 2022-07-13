@@ -10,6 +10,13 @@ class Book(models.Model):
     )
     pages = models.SmallIntegerField(verbose_name="Кол-во страниц")
     price = models.DecimalField(max_digits=5, decimal_places=2, verbose_name="Цена")
+    author = models.ForeignKey(
+        "auth.User",
+        verbose_name="Автор",
+        related_name="books",
+        on_delete=models.SET_NULL,
+        null=True,
+    )
 
     class Meta:
         verbose_name = "Книга"

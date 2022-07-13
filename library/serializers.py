@@ -1,12 +1,15 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from .models import Book
 
 
 class BookSerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source="author.username")
+
     class Meta:
         model = Book
-        fields = ("id", "name", "price", "pages", "published_at")
+        fields = ("id", "name", "price", "pages", "published_at", "author")
 
     def create(self, validated_data):
         return Book.objects.create(**validated_data)
@@ -20,3 +23,11 @@ class BookSerializer(serializers.ModelSerializer):
         instance.price = validated_data.get("price", instance.price)
         instance.save()
         return instance
+
+
+class UserSerializer(serializers.ModelSerializer):
+    books = serializers.PrimaryKeyRelatedField(many=True, queryset=Book.objects.all())
+
+    class Meta:
+        model = User
+        fields = ["id", "username", "books"]
